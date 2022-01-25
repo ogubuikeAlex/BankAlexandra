@@ -75,7 +75,9 @@ export default function App() {
         recommendTxn.wait();
 
         let count = await recommendationContract.getTotalAboutMes();
+        setAboutMe("");
         console.log("Retrieved total AboutMe count...", count.toNumber());
+
       } else {
         console.log("Ethereum object doesnt exist");
       }
@@ -183,7 +185,7 @@ export default function App() {
                         
                         currentAboutMeList?.length < 1 ? <h1>No about me found.</h1> :
                         
-                          currentAboutMeList.map((aboutme, index) => {
+                          currentAboutMeList.reverse().map((aboutme, index) => {
                             return (
                               <div key={index} className='waveSenderContainer'>
                                 <div className="waverAddressList">
