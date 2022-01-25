@@ -144,7 +144,7 @@ export default function App() {
                   <span className="header" aria-label="Greeting" role="img">
                     😘 Hi! Welcome to the Recommendation Portal!
                   </span>
-                  <p className="bio">Send me a short and impressive info about yourself<br />If it is impressive enough, I will recommend you <br />and probably give you some ETH🙂 as a tip for a job well done</p>
+                  <p className="bio">Connect your Metamask wallet to <br />Send me a short and impressive info about yourself<br />If it is impressive enough, I will recommend you <br />and probably give you some ETH🙂 as a tip for a job well done</p>
                   
                   <button className="waveButton-inverted" onClick={connectWallet}>
                     Connect and Lets GO!
