@@ -1,8 +1,7 @@
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useState } from "react";
 import { ethers } from "ethers";
 import './App.css';
 import abi from "./utils/portal.json";
-import { SenderDetailsModal, Spinner } from './components'
 
 export default function App() {
 
@@ -10,9 +9,6 @@ export default function App() {
   const [currentAccount, setCurrentAccount] = useState("");
   const [currentAboutMe, setAboutMe] = useState("");
   const [currentAboutMeList, setCurrentAboutMeList] = useState([]);
-  const [fetchingAboutMes, setFetchingAboutMes] = useState(null);
-  const [AllAboutMes, setAllAboutMes] = useState({});
-  const [sendAboutMeInProgress, setSendAboutMeInProgress] = useState(false);
 
   const contractAddress = "0xf9Df5e9543D3717FfE45486C0AB8333817266119";
   const contractAbi = abi.abi;
@@ -64,7 +60,7 @@ export default function App() {
 
   //Send about me
   const sendAboutMe = async () => {
-    setSendAboutMeInProgress(true);
+    
     try {
       const { ethereum } = window;
 
@@ -83,17 +79,15 @@ export default function App() {
       } else {
         console.log("Ethereum object doesnt exist");
       }
-      setSendAboutMeInProgress(false);
+      
     } catch (err) {
       console.log(`error : ${err}`);
     }
 
   }
 
-  let callSendAboutMe = () => sendAboutMe(currentAboutMe);
-
   const getAllAboutMes = async () => {
-    setFetchingAboutMes(true)
+    
     const { ethereum } = window;
 
     if (ethereum) {
@@ -102,7 +96,7 @@ export default function App() {
       const contract = new ethers.Contract(contractAddress, contractAbi, signer);
 
       let aboutMes = await contract.getAllAboutMes();
-      let aboutMeCount = await contract.getTotalAboutMes();
+      
       //next store it in an array
       let allaboutMes = [];
       console.log(aboutMes);
@@ -119,10 +113,10 @@ export default function App() {
     } else {
       console.log("ethereum object is not available");
     }
-    setFetchingAboutMes(false);
+    
   }
 
-  useEffect(() => { checkUserHasAccount(); }, []);
+  useEffect(() => { checkUserHasAccount(); });
 
   return (
     <div>
