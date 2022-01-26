@@ -10,7 +10,7 @@ export default function App() {
   const [currentAboutMe, setAboutMe] = useState("");
   const [currentAboutMeList, setCurrentAboutMeList] = useState([]);
 
-  const contractAddress = "0xf9Df5e9543D3717FfE45486C0AB8333817266119";
+  const contractAddress = "0x36242687Af6a21B4470016896e595fcFa7aaE11f";
   const contractAbi = abi.abi;
 
   const checkUserHasAccount = async () => {
@@ -69,7 +69,7 @@ export default function App() {
         const signer = provider.getSigner();
         const recommendationContract = new ethers.Contract(contractAddress, contractAbi, signer);
 
-        let recommendTxn = await recommendationContract.sendAboutMe(currentAboutMe);
+        let recommendTxn = await recommendationContract.sendAboutMe(currentAboutMe, {gasLimit : 300000});
         console.log("Sending About Me now!");
         console.log("Mining", recommendTxn.hash);
         recommendTxn.wait();
@@ -111,7 +111,7 @@ export default function App() {
         })
       })
       setCurrentAboutMeList(allaboutMes);
-
+      
     } else {
       console.log("ethereum object is not available");
     }

@@ -8,7 +8,7 @@ const main = async () => {
     const recommendationContract = await recommendationContractFactory.deploy({value: hre.ethers.utils.parseEther("0.1")}); //this willl deploy the contract and fund it with ether from my wallet
      
     await recommendationContract.deployed(); //we will wait until our cintract finishes deploying
-   //recommendation COntract.adress gives us the actual address our contract was deployed to
+   //recommendation Contract.adress gives us the actual address our contract was deployed to
     console.log(`contract deployed to ${recommendationContract.address}`);
     console.log(`contract deployed by ${owner.address}`);
 
@@ -37,7 +37,7 @@ const main = async () => {
     //format the balnce well
     console.log(`contract balance ${hre.ethers.utils.formatEther(contractBalance)}`);
 
-//Send second about me
+    //Send second about me
     console.log("simulating a random person sending an about me\n");
     aboutMeTxn = await recommendationContract.connect(randomPerson).sendAboutMe("I love to eat beans");
 
