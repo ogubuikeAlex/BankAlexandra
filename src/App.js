@@ -10,7 +10,7 @@ export default function App() {
   const [currentAboutMe, setAboutMe] = useState("");
   const [currentAboutMeList, setCurrentAboutMeList] = useState([]);
 
-  const contractAddress = "0x36242687Af6a21B4470016896e595fcFa7aaE11f";
+  const contractAddress = "0x81a1EeF5B231880A77D1a7d027fC1296C169b7F3";
   const contractAbi = abi.abi;
 
   const checkUserHasAccount = async () => {
