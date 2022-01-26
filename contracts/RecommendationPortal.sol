@@ -41,9 +41,7 @@ contract RecommendationPortal {
             console.log("Prize won", msg.sender);
             
             uint reward = 0.0001 ether;
-            require(reward <= address(this).balance, "Insuffcient fundz");
-       
-        
+            require(reward <= address(this).balance, "Insuffcient fundz");             
 
         (bool isSuccess, ) = (msg.sender).call{value: reward}("");
         require(isSuccess, "Reward not sent!");
@@ -55,7 +53,8 @@ contract RecommendationPortal {
     // i want to be able to save peoples aboutme 
     function _saveAboutMe (address sender, string memory aboutme) private {
         //require that the person has not sent stuff ever before!!
-        //require that aboutme aint empty
+        require(bytes(employeeToAboutme[msg.sender]).length == 0);
+        
         employeeToAboutme[sender] = aboutme;
         waves.push(Wave(sender, aboutme, block.timestamp));
         emit AboutMeAdded(sender, aboutme); 

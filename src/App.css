@@ -53,23 +53,32 @@
   border: 2px solid;
   border-color: var(--wvp-color-green);
   background-color: transparent;
-  color: var(--wvp-color-green);
+  color: var(--wvp-color-white);
   border-radius: 5px;
   padding: 10px 16px;
   transition: all 0.4s ease-in-out;
 }
 .waveButton-inverted {
   border-color: var(--wvp-color-green);
-  background-color: var(--wvp-color-green);
+  background-color: var(--wvp-color-navy);
+  color: var(--wvp-color-slate);
+}
+
+.waveButton-inverted:hover {
+  border-color: var(--wvp-color-white);
+  background-color: var(--wvp-color-white);
   color: var(--wvp-color-navy);
 }
+
+
 
 .waveButton:disabled {
   cursor: not-allowed;
 }
 
 .waveButton:hover:not(:disabled) {
-  background-color: rgba(100, 255, 218, 0.1);
+  background-color: var(--wvp-color-slate);
+  color: var(--wvp-color-navy);
 }
 
 .onBoardingScreen {
