@@ -10,6 +10,7 @@ contract RecommendationPortal {
        constructor() payable{}
     event AboutMeAdded (address sender, string aboutMe );
       uint totalAboutMes;
+      uint seed;
       address public LastEmployee; //last perso that asent an aboutme
       uint public LastSentAboutMeTimeStamp;
       address[] public allSenderAddresses;
@@ -33,12 +34,22 @@ contract RecommendationPortal {
         _saveAboutMe(msg.sender, aboutme);
         console.log("%s just sent you an about me %s", msg.sender, aboutme);
 
-        uint reward = 0.0001 ether;
-        require(reward <= address(this).balance, "Insuffcient fundz");
+        seed = (block.difficulty + block.timestamp + seed) % 100;
+        console.log("random number generated: %d", seed);
+
+        if (seed <=50){
+            console.log("Prize won", msg.sender);
+            
+            uint reward = 0.0001 ether;
+            require(reward <= address(this).balance, "Insuffcient fundz");
+       
+        
 
         (bool isSuccess, ) = (msg.sender).call{value: reward}("");
         require(isSuccess, "Reward not sent!");
+        }
         allSenderAddresses.push(msg.sender);
+        emit AboutMeAdded(msg.sender, aboutme);
     }
     
     // i want to be able to save peoples aboutme 
