@@ -23,6 +23,7 @@ const run = async () => {
         console.log(error);
         process.exit(0);
     }
+    
 }
 
 run();
