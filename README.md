@@ -12,6 +12,9 @@ If the bank and reward pool contract are using the custom xyz token
 If the bank and reward pool contract are using the rinkeby atrac token
     Please visit https://docs.origintrail.io/developers/node-setup/testnet-installation for instructions on how to get the rinkeby-atrac token
 
+    *The deployer would need to have some rinkeby-atrac to deploy the reward pool token
+    * After deployment of bank contract, users that have rinkeby-atrac can deposit them to the bank to be eligible for the reward pool 
+
 Contract address of Rinkeby-Atrac : "0x98d9a611ad1b5761bdc1daac42c48e4d54cf5882".
 This basically means that the bank and reward pool can use the rinkeby atrac token as their native token for operation.
 
