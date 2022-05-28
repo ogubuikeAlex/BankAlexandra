@@ -3,6 +3,7 @@ Case study: ```to create a bank smart contract which will enable anyone to depos
 contract deployment. At deployment the bank owner sets a time period constant T, to be used for reward calculation. ```
 
 # For note on contract Deployment: Look at scripts/deploy.js
+Please use **rinkeby** network for this project!!!
 
 # Note to deployer:
 After deployment, 
@@ -18,7 +19,7 @@ If the bank and reward pool contract are using the rinkeby atrac token
 Contract address of Rinkeby-Atrac : "0x98d9a611ad1b5761bdc1daac42c48e4d54cf5882".
 This basically means that the bank and reward pool can use the rinkeby atrac token as their native token for operation.
 
-** before you interact with front end, please make sure the code is using the correct abi and contract address inside src/App.js **
+**before you interact with front end, please make sure the code is using the correct abi and contract address inside src/App.js**
 
 # To run and interact with the deposit and withdraw functions:
 - Clone project
