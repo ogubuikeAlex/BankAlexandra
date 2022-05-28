@@ -42,9 +42,13 @@ const main = async () => {
     await rewardContract.deployed();
     console.log("Reward Pool address: ", rewardContract.address);
 
-    // Finally set reward contract for bank
+    //Set reward contract for bank
     var setRewardTxn = bankContract.setRewardContract(rewardContract.address);
     await setRewardTxn.wait();
+
+    //Decrease Allowance to bank
+    //await tokenContract..decreaseAllowance(bankContract.address, 10000);
+
 }
 
 const run = async () => {

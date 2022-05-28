@@ -4,9 +4,13 @@ contract deployment. At deployment the bank owner sets a time period constant T,
 
 # For contract Deployment: Look at scripts/deploy.js
 
+# Note to deployer:
 After deployment, 
-This is a 
-This project has a custom token but can also be run with the Rinkeby-Atrac token.
+If the bank and reward pool contract are using the custom xyz token 
+    Then you must transfer some of this tokens to potential users of the reward pool.
+    After transfering the tokens to the users, the users can then deposit to the bank to be eligible for the reward pool.
+If the bank and reward pool contract are using the rinkeby atrac token
+    Please visit https://docs.origintrail.io/developers/node-setup/testnet-installation for instructions on how to get the rinkeby-atrac token
 
 Contract address of Rinkeby-Atrac : "0x98d9a611ad1b5761bdc1daac42c48e4d54cf5882".
 This basically means that the bank and reward pool can use the rinkeby atrac token as their native token for operation.

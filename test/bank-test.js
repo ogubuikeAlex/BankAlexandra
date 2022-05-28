@@ -212,7 +212,7 @@ describe('the bankWithdrawReward function', () => {
             console.log(await token.balanceOf(thirdAddress.address), "thirdAddressbal2")
         }, 10000);
 
-        await timeout(async () => { }, 5000);       
+       await timeout(async () => { }, 2000);       
 
     })
     it("can only be called when it is reward time (2T)", () => {
