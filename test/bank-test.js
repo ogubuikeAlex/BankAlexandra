@@ -191,11 +191,11 @@ describe('the bankWithdrawReward function', () => {
         await timeout(async () => {
             let txx = await bank.setRewardContract(reward.address);
             await txx.wait();
-            console.log(await token.balanceOf(buyerAddress.address), "thirdAddressbal1")
+            console.log(await token.balanceOf(buyerAddress.address), "Balance of user two before bank withdrawl")
 
             let tx = await reward.connect(buyerAddress).Withdraw();
             await tx.wait()
-            console.log(await token.balanceOf(buyerAddress.address), "thirdAddressbal2")
+            console.log(await token.balanceOf(buyerAddress.address), "Balance of user two before bank withdrawal")
 
             //console.log(xx, "x")
             //await token.connect(thirdAddress).increaseAllowance(bankAddress, 4000);

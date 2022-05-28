@@ -9,6 +9,5 @@ To run:
 - Clone project
 _ run "npm i" on your terminal
 - run "npm start" on your terminal
-
-To run test:
-- run "npx hardhat test"
+or
+- run "npx hardhat test" //to run test
