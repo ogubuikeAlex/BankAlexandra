@@ -13,6 +13,8 @@ interface Ibank {
     //gets the balance of user in the erc20 contrace
     function balanceOf(address sender) external view returns (uint256 balance);
 
+    function getRewardPoolAmount() external view returns (uint256);
+
     //get how much the person deposited to the bank
     function getBankBalanceOf(address sender)
         external

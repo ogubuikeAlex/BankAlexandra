@@ -72,6 +72,13 @@ contract RewardPool is Ownable, ReentrancyGuard {
             totalRewardPoolAmount <= deployersBalance,
             "Insufficient bank balance"
         );
+        uint256 setRewardAmount = bank.getRewardPoolAmount();
+
+        require(
+            totalRewardPoolAmount == setRewardAmount,
+            "The reward amount set in bank contract must be equal"
+        );
+
 
         bank.bankDeposit(totalRewardPoolAmount);
         uint256 setDepositTime = bank.getSetDepositTime();
@@ -323,29 +330,5 @@ contract RewardPool is Ownable, ReentrancyGuard {
 }
 
 interface IBank is Ibank{
-    function bankDeposit(uint256 amount) external payable;
-
-    function bankWithdraw() external;
-
-    function bankRewardWithdraw(address sender, uint256 finalBalance) external;
-
-    function withdrawRewardBalance() external;
-
-    //gets the balance of user in the erc20 contrace
-    function balanceOf(address sender) external view returns (uint256 balance);
-
-    //get how much the person deposited to the bank
-    function getBankBalanceOf(address sender)
-        external
-        view
-        returns (uint256 balance);
-
-    //get total amount deposited to tjhe bank
-    function getTotalDeposit() external view returns (uint256);
-
-    //GET TIME IN SECONDS FOR DEPOSIT
-    function getSetDepositTime() external view returns (uint256);
-
-    // Private functions
-    function setRewardContract(address reward) external;
+    
 }

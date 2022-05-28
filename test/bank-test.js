@@ -164,20 +164,20 @@ describe('the bankWithdrawReward function', () => {
         //await token.decreaseAllowance(bankAddress, 10000);
         console.log(1)
         //user deposits xyz token
-        console.log(await token.balanceOf(buyerAddress.address), "User token balance before seending to bank");
+        console.log(await token.balanceOf(buyerAddress.address), "User1 token balance before seending to bank");
         let _depositedAmount1 = await bank.getTotalDeposit();
-        console.log(_depositedAmount1, "total amount in bank before uswr deposit");
+        console.log(_depositedAmount1, "total amount in bank before user1 deposits 1000 tokens");
         await token.connect(buyerAddress).increaseAllowance(bankAddress, 1000);
         await bank.connect(buyerAddress).bankDeposit(1000);
 
-        console.log(await token.balanceOf(buyerAddress.address), "User token balance after seending to bank")
+        console.log(await token.balanceOf(buyerAddress.address), "User1 token balance after seending to bank")
 
         let _depositedAmountx = await bank.getTotalDeposit();
-        console.log(_depositedAmountx, "total amount in bank after user deposit");
+        console.log(_depositedAmountx, "total amount in bank after user1 deposit");
         //user2 deposits
         console.log(await token.balanceOf(thirdAddress.address), "User token balance before seending to bank");
         let _depositedAmount2 = await bank.getTotalDeposit();
-        console.log(_depositedAmount2, "total amount in bank before uswr2 deposit");
+        console.log(_depositedAmount2, "total amount in bank before uswe2 deposit");
         await token.connect(thirdAddress).increaseAllowance(bankAddress, 4000);
         await bank.connect(thirdAddress).bankDeposit(4000);
 
@@ -185,9 +185,9 @@ describe('the bankWithdrawReward function', () => {
 
         let _depositedAmount = await bank.getTotalDeposit();
         console.log(_depositedAmount, "total amount in bank after user2 deposit");
+        //await token.decreaseAllowance(bankAddress, 10000); 
 
-        //await token.decreaseAllowance(bankAddress, 10000);       
-        //user1 withdraws at t1 which is 
+        //user1 withdraws at time greater than t2 which is 
         await timeout(async () => {
             let txx = await bank.setRewardContract(reward.address);
             await txx.wait();
@@ -196,18 +196,15 @@ describe('the bankWithdrawReward function', () => {
             let tx = await reward.connect(buyerAddress).Withdraw();
             await tx.wait()
             console.log(await token.balanceOf(buyerAddress.address), "Balance of user two before bank withdrawal")
-
-            //console.log(xx, "x")
-            //await token.connect(thirdAddress).increaseAllowance(bankAddress, 4000);
+           
         }, 12000);
 
 
         await timeout(async () => { }, 10000);
 
+        //user2 withdraws at time greater than t4 which is 
         await timeout(async () => {
-            //T3 Withdrawal;
-            // let txx = await bank.setRewardContract(reward.address);
-            // await txx.wait();
+            //T3 Withdrawal;            
             console.log(await token.balanceOf(thirdAddress.address), "thirdAddressbal1")
 
             let tx = await reward.connect(thirdAddress).Withdraw();
@@ -215,36 +212,11 @@ describe('the bankWithdrawReward function', () => {
             console.log(await token.balanceOf(thirdAddress.address), "thirdAddressbal2")
         }, 10000);
 
-        await timeout(async () => { }, 10000);
-
-        //// console.log("yew")
-
-
-        //check users erc20 balance
-        //check bank balance
-        //user2 withdraws at t2
-        // return timeout(async () => {
-        //     console.log("beaut")
-        //   }, 6000);
+        await timeout(async () => { }, 5000);       
 
     })
     it("can only be called when it is reward time (2T)", () => {
 
-    })
-});
-
-describe('the bankWithdraw function', () => {
-    it('returns the final balance to be withdrawn at time of withdrawal', () => {
-        //[...insert test here...]
-    })
-    it("can only be called when it is reward time (2T)", () => {
-
-    })
-});
-
-describe('the withdrawRewardBalance function', () => {
-    it('returns the balance of the reward pool', () => {
-        //[...insert test here...]
     })
 });
 

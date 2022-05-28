@@ -176,6 +176,10 @@ contract BankAlexandra is Ownable, ReentrancyGuard {
         return _depositTimePeriod;
     }
 
+    function getRewardPoolAmount() external view returns (uint256){
+        return _totalRewardPoolAmount;
+    }
+
     // Private functions
     function _deposit(uint256 amount) private {
         uint256 senderWalletBalance = _erc20Contract.balanceOf(tx.origin);
