@@ -3,18 +3,23 @@ import { ethers } from "ethers";
 import './App.css';
 import rewardAbi from "./artifacts/contracts/RewardPool.sol/RewardPool.json";
 import bankAbi from "./artifacts/contracts/Bank.sol/BankAlexandra.json"
+import tokenAbi from "./artifacts/contracts/XYZ.sol/XYzToken.json"
+import rinkebyAtracAbi from "./artifacts/contracts/IRinkebyAtrac.sol/IRinkebyAtrac.json";
 
 export default function App({ isAuthenticated, connect, currentUser, currentNetwork, userHasConnected, currentProvider }) {
 
   const [depositAmount, setDepositAmount] = useState("");
 
-  // const [currentAboutMeList, setCurrentAboutMeList] = useState([]);
   const [userHasConnectedccount, setUserHasConnectedAccount] = useState(false);
   const rewardPoolContractAddress = "0x81a1EeF5B231880A77D1a7d027fC1296C169b7F3";
   const bankContractAddress = "0x81a1EeF5B231880A77D1a7d027fC1296C169b7F3";
+  const tokenContractAddress = ""; 
+  //const rinkebyAtrac ="0x98d9a611ad1b5761bdc1daac42c48e4d54cf5882
 
   const contractAbi = rewardAbi.abi;
   const bankContractAbi = bankAbi.abi;
+  const tokenContractAbi = tokenAbi.abi;
+  const rinkebyAtracContractAbi = rinkebyAtracAbi.abi;
 
   const connecting = async () => {
     console.log("pressing")
@@ -26,7 +31,7 @@ export default function App({ isAuthenticated, connect, currentUser, currentNetw
       const signer = currentProvider.getSigner();
       const rewardContract = new ethers.Contract(rewardPoolContractAddress, contractAbi, signer);
 
-      let withdrawalTxn = await rewardContract.Withdraw({ gasLimit: 300000 });
+      let withdrawalTxn = await rewardContract.Withdraw();
       await withdrawalTxn.wait();
     }
 
@@ -42,8 +47,13 @@ export default function App({ isAuthenticated, connect, currentUser, currentNetw
     try {
       const signer = currentProvider.getSigner();
       const contract = new ethers.Contract(bankContractAddress, bankContractAbi, signer);
+      const tokenContract = new ethers.Contract(tokenContractAddress, tokenContractAbi, signer);
+      //const rinkebyContract = new ethers.Contract(rinkebyAtrac, rinkebyAtracContractAbi, signer);
 
-      let depositTxn = await contract.bankDeposit({ gasLimit: 300000 });
+      let allowTxn = tokenContract.approve(bankContractAddress, depositAmount);
+      await allowTxn.wait();
+
+      let depositTxn = await contract.bankDeposit(depositAmount);
       await depositTxn.wait();
     }
     catch (err) {
