@@ -23,7 +23,7 @@ This basically means that the bank and reward pool can use the rinkeby atrac tok
 
 # To run and interact with the deposit and withdraw functions:
 - Clone project
-_ run "npm i" on your terminal
+- run "npm i" on your terminal
 - run "npm start" on your terminal
 or
 - run "npx hardhat test" //to run test
