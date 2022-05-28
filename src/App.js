@@ -11,9 +11,10 @@ export default function App({ isAuthenticated, connect, currentUser, currentNetw
   const [depositAmount, setDepositAmount] = useState("");
 
   const [userHasConnectedccount, setUserHasConnectedAccount] = useState(false);
-  const rewardPoolContractAddress = "0x47CBF6Fddba8bdcb2EC82EC4AfFD21abf06EE9D6";
-  const bankContractAddress = "0xe9a6248a24E2C75C1eA07852ecEdE28dA94D9911";
-  const tokenContractAddress = "0xAA2cBD04163a5396d185B6Bb736fE387BD13B6f4"; 
+  const [userBalance, setUserBalance] = useState("0");
+  const rewardPoolContractAddress = "0x6f06CCe0220Ff598e7B2717DDc870d25C2e1972C";
+  const bankContractAddress = "0x71448Aa9823d7d649De65BCaeF5eb521C005aa1C";
+  const tokenContractAddress = "0xA0059B2D216ef054312178E406FF3A8E1241C83F";
   //const rinkebyAtrac ="0x98d9a611ad1b5761bdc1daac42c48e4d54cf5882
 
   const contractAbi = rewardAbi.abi;
@@ -25,9 +26,18 @@ export default function App({ isAuthenticated, connect, currentUser, currentNetw
     console.log("pressing")
     await connect();
   }
+
+  const getBalance = async () => {
+    const signer = await currentProvider.getSigner();
+    const contract = new ethers.Contract(bankContractAddress, bankContractAbi, signer);
+
+    let balance = await contract.balanceOf(currentUser);
+    setUserBalance(balance.toString());
+  }
+
   //Send about me
   const withdraw = async () => {
-    try {      
+    try {
       const signer = currentProvider.getSigner();
       const rewardContract = new ethers.Contract(rewardPoolContractAddress, contractAbi, signer);
 
@@ -36,13 +46,20 @@ export default function App({ isAuthenticated, connect, currentUser, currentNetw
     }
 
     catch (err) {
-      alert(err);
-      console.log("An error occured : \n", err);
+      let error = { ...err }
+
+      let message = error?.error?.data?.originalError?.message;
+      if (!message) {
+        alert(err.code);
+      }
+      else {
+        alert(error?.error?.data?.originalError?.message);
+      }
     }
   }
 
   const deposit = async () => {
-    if (!depositAmount){
+    if (!depositAmount) {
       return;
     }
     try {
@@ -63,15 +80,18 @@ export default function App({ isAuthenticated, connect, currentUser, currentNetw
     finally {
       setDepositAmount("")
     }
-  }  
+  }
 
   useEffect(() => {
     const authenticated = localStorage.getItem("isAuthenticated");
     if (authenticated && JSON.parse(authenticated)) {
       setUserHasConnectedAccount(true);
+     // getBalance();
+
       //connect();
     }
     connect();
+    
   }, [])
 
   useEffect(() => {
@@ -144,7 +164,7 @@ export default function App({ isAuthenticated, connect, currentUser, currentNetw
               </div>
 
               <div className="wavesSendersInfo">
-                <h2> Current Network: {currentNetwork}<br /><br />Current Staking Balance: {"0"}</h2>
+                <h2> Current Network: {currentNetwork}<br /><br />Current Staking Balance: {userBalance}</h2>
               </div>
             </section>
           </React.Fragment>
