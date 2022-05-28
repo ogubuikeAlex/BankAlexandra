@@ -1,15 +1,12 @@
-# Basic Sample Hardhat Project
+# Onboarding Project for TraceLabs
 
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, a sample script that deploys that contract, and an example of a task implementation, which simply lists the available accounts.
+This project has a custom token but can also be run with the Rinkeby-Atrac token
+contract address of Rnkeby-Atrac : "0x98d9a611ad1b5761bdc1daac42c48e4d54cf5882"
 
-Try running some of the following tasks:
+To run:
+- Clone project
+_ run "npm i" on your terminal
+- run "npm start" on your terminal
 
-```shell
-npx hardhat accounts
-npx hardhat compile
-npx hardhat clean
-npx hardhat test
-npx hardhat node
-node scripts/sample-script.js
-npx hardhat help
-```
+To run test:
+- run "npx hardhat test"
