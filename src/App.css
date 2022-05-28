@@ -141,7 +141,7 @@ h1.wavesCounter span {
   height: 100%;
   display: grid;
   grid-template-rows: 0.5fr 1fr;
-  width: 100%;
+  width: 30%;
   padding-bottom: 50px;
   padding-top: 50px;
   padding-right: 50px;

@@ -1,214 +1,146 @@
 import React, { useEffect, useState } from "react";
 import { ethers } from "ethers";
 import './App.css';
-import abi from "./utils/portal.json";
+import rewardAbi from "./artifacts/contracts/RewardPool.sol/RewardPool.json";
+import bankAbi from "./artifacts/contracts/Bank.sol/BankAlexandra.json"
 
-export default function App() {
+export default function App({ isAuthenticated, connect, currentUser, currentNetwork, userHasConnected, currentProvider }) {
 
-  const [userHasMetaMask, setUserHasMetaMask] = useState("loading");
-  const [currentAccount, setCurrentAccount] = useState("");
-  const [currentAboutMe, setAboutMe] = useState("");
-  const [currentAboutMeList, setCurrentAboutMeList] = useState([]);
+  const [depositAmount, setDepositAmount] = useState("");
 
-  const contractAddress = "0x81a1EeF5B231880A77D1a7d027fC1296C169b7F3";
-  const contractAbi = abi.abi;
+  // const [currentAboutMeList, setCurrentAboutMeList] = useState([]);
+  const [userHasConnectedccount, setUserHasConnectedAccount] = useState(false);
+  const rewardPoolContractAddress = "0x81a1EeF5B231880A77D1a7d027fC1296C169b7F3";
+  const bankContractAddress = "0x81a1EeF5B231880A77D1a7d027fC1296C169b7F3";
 
-  const checkUserHasAccount = async () => {
-    try {
-      const { ethereum } = window;
-      //Check that user has meta mask
-      if (!ethereum) {
-        console.log("Do you have metamask installed ?");
-        setUserHasMetaMask("failed")
-        return;
-      }
-      else {
-        console.log("We have metamask", ethereum);
-        setUserHasMetaMask("sucessful");
-      }
+  const contractAbi = rewardAbi.abi;
+  const bankContractAbi = bankAbi.abi;
 
-      //Check if an ethereum account exists in wallet
-      const accounts = await ethereum.request({ method: "eth_accounts" });
-
-      if (accounts.length !== 0) {
-        console.log("found an authorized account,", accounts[0]);
-        setCurrentAccount(accounts[0]);
-        await getAllAboutMes();
-      } else {
-        console.log("No account found")
-      }
-    } catch (err) {
-      console.log("Error", err);
-    }
+  const connecting = async () => {
+    console.log("pressing")
+    await connect();
   }
-  //Connect a wallet
-  const connectWallet = async () => {
-    try {
-      const { ethereum } = window;
-
-      if (!ethereum) {
-        console.log("Do you have meta mask");
-      }
-      else {
-        console.log("We have metamask", ethereum);
-        const accounts = await ethereum.request({ method: "eth_requestAccounts" });
-        console.log("connected", accounts[0]);
-        setCurrentAccount(accounts[0]);
-      }
-    } catch (error) { console.log(`error : ${error}`); }
-  }
-
   //Send about me
-  const sendAboutMe = async () => {
-    
+  const withdraw = async () => {
+    try {      
+      const signer = currentProvider.getSigner();
+      const rewardContract = new ethers.Contract(rewardPoolContractAddress, contractAbi, signer);
+
+      let withdrawalTxn = await rewardContract.Withdraw({ gasLimit: 300000 });
+      await withdrawalTxn.wait();
+    }
+
+    catch (err) {
+      console.log("An error occured : \n", err);
+    }
+  }
+
+  const deposit = async () => {
+    if (!depositAmount){
+      return;
+    }
     try {
-      const { ethereum } = window;
+      const signer = currentProvider.getSigner();
+      const contract = new ethers.Contract(bankContractAddress, bankContractAbi, signer);
 
-      if (ethereum) {
-        const provider = new ethers.providers.Web3Provider(ethereum);
-        const signer = provider.getSigner();
-        const recommendationContract = new ethers.Contract(contractAddress, contractAbi, signer);
-
-        let recommendTxn = await recommendationContract.sendAboutMe(currentAboutMe, {gasLimit : 300000});
-        console.log("Sending About Me now!");
-        console.log("Mining", recommendTxn.hash);
-        recommendTxn.wait();
-
-        let count = await recommendationContract.getTotalAboutMes();
-        setAboutMe("");
-        console.log("Retrieved total AboutMe count...", count.toNumber());
-
-      } else {
-        console.log("Ethereum object doesnt exist");
-      }
-      
-    } catch (err) {
-      console.log(`error : ${err}`);
+      let depositTxn = await contract.bankDeposit({ gasLimit: 300000 });
+      await depositTxn.wait();
     }
-
-  }
-
-  const getAllAboutMes = async () => {
-    
-    const { ethereum } = window;
-
-    if (ethereum) {
-      const provider = new ethers.providers.Web3Provider(ethereum);
-      const signer = provider.getSigner();
-      const contract = new ethers.Contract(contractAddress, contractAbi, signer);
-
-      let aboutMes = await contract.getAllAboutMes();
-      
-      //next store it in an array
-      let allaboutMes = [];
-      console.log(aboutMes);
-      aboutMes.forEach(aboutMe => {
-        console.log("the messge:" + aboutMe.AboutMe);
-        allaboutMes.push({
-          sender: aboutMe.sender,
-          aboutMe: aboutMe.AboutMe,
-          timeStamp: aboutMe.TimeStamp
-        })
-      })
-      setCurrentAboutMeList(allaboutMes);
-      
-    } else {
-      console.log("ethereum object is not available");
+    catch (err) {
+      console.log("An error occured : \n", err);
     }
-    
-  }
+    finally {
+      setDepositAmount("")
+    }
+  }  
 
-  useEffect(() => { checkUserHasAccount(); });
+  useEffect(() => {
+    const authenticated = localStorage.getItem("isAuthenticated");
+    if (authenticated && JSON.parse(authenticated)) {
+      setUserHasConnectedAccount(true);
+      //connect();
+    }
+    connect();
+  }, [])
+
+  useEffect(() => {
+    localStorage.setItem("isAuthenticated", userHasConnectedccount)
+
+  }, [userHasConnectedccount])
 
   return (
     <div>
       <React.Fragment>
-        {userHasMetaMask === 'loading' ? (
+        {userHasConnected === 'loading' ? (
           <div className="onBoardingScreen">
-            <h2>Starting Recommendation portal, Feel free to think about the best description of yourself!</h2>
+            <h1>Welcome To Banco Alejandra!<br /><br /></h1>
+            <h2>Scan the QR code to connect your wallet and Be a part of the reward pool<br />
+              or you could <a style={{ color: "white" }} href="https://metamask.io/">install Metamask</a> to Proceed
+            </h2>
+            <button className="waveButton-inverted" onClick={connecting}>
+              Connect and Lets GO!
+            </button>
           </div>
-        ) : userHasMetaMask === 'failed' ? (
+        ) : userHasConnected === 'failed' ? (
           <div className="onBoardingScreen">
+            <span className="header" aria-label="Greeting" role="img">
+              Hi! Welcome to <br /> Banco Alejandra!
+            </span>
             <span className="header" aria-label="Greeting" role="img">
               😥
             </span>
             <h2 style={{ maxWidth: '600px', textAlign: 'center' }}>
-              You must <a href="https://metamask.io/">install Metamax</a> to  send an about me for a JOB recommendation
+              You must connect a wallet to  be able to Proceed
             </h2>
+            <button className="waveButton-inverted" onClick={connecting}>
+              Connect and Lets GO!
+            </button>
           </div>
         ) : (
           <React.Fragment>
-            {!currentAccount ? (
-              <section className="onBoardingScreen">
-                <div className="onboardingContainer">
-                  <span className="header" aria-label="Greeting" role="img">
-                    😘 Hi! Welcome to the Recommendation Portal!
+            <section className="dataWrapper">
+              <div className="dataContainer">
+                <span className="header" aria-label="Greeting" role="img">
+                  😎 Hey {currentUser.slice(0, 6)}...{currentUser.slice(-3)}!
+                </span>
+
+                <h3 className="bio">
+                  At Banco Alejandra when you stake tokens, you become part of the great Alexandra pool
+                  <br /><br />
+                  Its a game of patience<br />
+                  <span style={{ color: "white" }}> The rule is simple : THE LONGER YOUR STAKE THE HIGHER YOUR REWARD
                   </span>
-                  <p className="bio">Connect your Metamask wallet to <br />Send me a short and impressive info about yourself<br />If it is impressive enough, I will recommend you <br />and probably give you some ETH🙂 as a tip for a job well done</p>
-                  
-                  <button className="waveButton-inverted" onClick={connectWallet}>
-                    Connect and Lets GO!
-                  </button>
-                </div>
-              </section>
-            ) : (
-              <React.Fragment>
-                <section className="dataWrapper">
-                  <div className="dataContainer">
-                    <span className="header" aria-label="Greeting" role="img">
-                      😎 Hey {currentAccount.slice(0, 6)}...{currentAccount.slice(-3)}!
-                    </span>
+                </h3>
 
-                    <p className="bio">
-                      I am 👑Alexandra. I love to meet impressive people like you. I am what you will describe as a foodie😋<br /> I love to write a lot of full stack codes!
-                    </p>
 
-                    <textarea
-                      className="waveMessageInput"
-                      onChange={e => setAboutMe(e.target.value)}
-                      value={currentAboutMe}
-                      name="waveMessage"
-                      placeholder="I would love to meet you, tell me something cool😋"
-                      cols="30"
-                      rows="5"
-                    ></textarea>
+                <input
+                  className="waveMessageInput"
+                  onChange={e => setDepositAmount(+(e.target.value))}
+                  value={depositAmount}
+                  name="tokenAmount"
+                  placeholder="How much token would you like to stake"
+                  cols="30"
+                  rows="5"
+                />
 
-                    <button className="waveButton" onClick={sendAboutMe}>
-                      Send about me
-                    </button>
-                  </div>
+                <button className="waveButton" onClick={() => deposit(depositAmount)}>
+                  <span>Stake 'Em Tokens</span>
+                </button>
 
-                  <div className="wavesSendersInfo">
-                  <h2> What have other people been saying?</h2>
-                    <React.Fragment>
-                      {
-                        
-                        currentAboutMeList?.length < 1 ? <h1>No about me found.</h1> :
-                        
-                          currentAboutMeList.reverse().map((aboutme, index) => {
-                            return (
-                              <div key={index} className='waveSenderContainer'>
-                                <div className="waverAddressList">
-                                  <span>Address: {aboutme.sender}</span>
-                                  <span> Time: {aboutme.timeStamp.toString()}</span>
-                                  <span>Message: {aboutme.aboutMe}</span>
-                                </div>
-                              </div>
-                            )
-                          })
-                          
-                      }
+                <button className="waveButton" onClick={withdraw}>
+                  <span>UnStake 'Em Tokens</span>
+                </button>
+              </div>
 
-                    </React.Fragment>
-
-                  </div>
-                </section>
-              </React.Fragment>
-            )}
-
+              <div className="wavesSendersInfo">
+                <h2> Current Network: {currentNetwork}<br /><br />Current Staking Balance: {"0"}</h2>
+              </div>
+            </section>
           </React.Fragment>
         )}
+
       </React.Fragment>
+
     </div>
   )
 }
