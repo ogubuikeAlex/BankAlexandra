@@ -18,7 +18,7 @@ If the bank and reward pool contract are using the rinkeby atrac token
 Contract address of Rinkeby-Atrac : "0x98d9a611ad1b5761bdc1daac42c48e4d54cf5882".
 This basically means that the bank and reward pool can use the rinkeby atrac token as their native token for operation.
 
-To run:
+# To run and interact with the deposit and withdraw functions:
 - Clone project
 _ run "npm i" on your terminal
 - run "npm start" on your terminal
