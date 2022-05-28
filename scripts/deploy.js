@@ -15,8 +15,8 @@ const main = async () => {
     var tokenFactory = await ethers.getContractFactory("XYzToken");
     var tokenContract = await tokenFactory.deploy();
     await tokenContract.deployed();
-    console.log("token address: ", tokenContract.address);
-
+    console.log("token address: ", tokenContract.address); 
+      
     //Deploy bank contract
     //If using rinkeby-Atrac please replace "tokenContract.address" in line 23 with "RinkebyAtrac"
     //Parameters for deployment of bank contract are
@@ -30,7 +30,7 @@ const main = async () => {
     console.log("Bank address: ", bankContract.address);
 
     //Owner Increase allowance for bank contract
-    let txn = await tokenContract.increaseAllowance(bankContract.address, 10000);
+    let txn = await tokenContract.approve(bankContract.address, 10000);
     await txn.wait();
 
     //Deploy reward contract
@@ -45,10 +45,6 @@ const main = async () => {
     //Set reward contract for bank
     var setRewardTxn = bankContract.setRewardContract(rewardContract.address);
     await setRewardTxn.wait();
-
-    //Decrease Allowance to bank
-    //await tokenContract..decreaseAllowance(bankContract.address, 10000);
-
 }
 
 const run = async () => {

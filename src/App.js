@@ -11,9 +11,9 @@ export default function App({ isAuthenticated, connect, currentUser, currentNetw
   const [depositAmount, setDepositAmount] = useState("");
 
   const [userHasConnectedccount, setUserHasConnectedAccount] = useState(false);
-  const rewardPoolContractAddress = "0x81a1EeF5B231880A77D1a7d027fC1296C169b7F3";
-  const bankContractAddress = "0x81a1EeF5B231880A77D1a7d027fC1296C169b7F3";
-  const tokenContractAddress = ""; 
+  const rewardPoolContractAddress = "0x47CBF6Fddba8bdcb2EC82EC4AfFD21abf06EE9D6";
+  const bankContractAddress = "0xe9a6248a24E2C75C1eA07852ecEdE28dA94D9911";
+  const tokenContractAddress = "0xAA2cBD04163a5396d185B6Bb736fE387BD13B6f4"; 
   //const rinkebyAtrac ="0x98d9a611ad1b5761bdc1daac42c48e4d54cf5882
 
   const contractAbi = rewardAbi.abi;
@@ -36,6 +36,7 @@ export default function App({ isAuthenticated, connect, currentUser, currentNetw
     }
 
     catch (err) {
+      alert(err);
       console.log("An error occured : \n", err);
     }
   }
